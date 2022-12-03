@@ -35,7 +35,7 @@ class Pixel:
 
     @property
     def color(self):
-        return self.viewport.image.getpixel((self.x, self.y))
+        return self.viewport.image.get_at((self.x, self.y))
 
     @color.setter
     def color(self, value):

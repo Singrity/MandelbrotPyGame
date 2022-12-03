@@ -21,6 +21,9 @@ class Viewport:
     def scale(self):
         return self.width / self.image.width
 
+
+
+
     def __iter__(self):
         for y in range(self.image.height):
             for x in range(self.image.width):
