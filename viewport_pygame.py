@@ -22,7 +22,8 @@ class Viewport:
         return self.width / self.image.get_width()
 
     def __iter__(self):
-        for y in range(self.image.get_height()):
+        #pygame.display.flip()
+        for y in range(0, self.image.get_height()):
             for x in range(self.image.get_width()):
                 yield Pixel(self, x, y)
 
