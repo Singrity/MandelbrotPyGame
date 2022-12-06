@@ -6,13 +6,14 @@ import numpy as np
 from mandelbrot import MandelbrotSet
 #from viewport import Viewport
 from viewport_pygame import Viewport
+from numba import jit, cuda
 import pygame
 import sys
 
 
 class Application:
-    WIDTH = 400
-    HEIGHT = 300
+    WIDTH = 700
+    HEIGHT = 700
     FPS = 0
 
     def __init__(self):
@@ -88,22 +89,22 @@ class Application:
     def denormalize(self, palette):
         return [tuple(int(channel * 255) for channel in color) for color in palette]
 
-    #@staticmethod
+
     def paint(self, mandelbrot_set, viewport, palette, smooth):
-        n = 0
-        self.painting_progress = 0
+        #n = 0
+        #self.painting_progress = 0
         time_start = pygame.time.get_ticks() / 1000
         self.display.fill((255, 255, 255))
         for pixel in viewport:
-            n += 1
+            #n += 1
 
-            stability = mandelbrot_set.stability_optimized(complex(pixel), smooth)
+            stability = mandelbrot_set.stability(complex(pixel), smooth)
             index = int(min(stability * len(palette), len(palette) - 1))
 
             if pixel.color[:3] != palette[index % len(palette)]:
                 pixel.color = palette[index % len(palette)]
 
-            self.painting_progress = (n / (self.WIDTH * self.HEIGHT)) * 100
+            #self.painting_progress = (n / (self.WIDTH * self.HEIGHT)) * 100
             #print(f"{int(self.painting_progress)}%")
 
 
@@ -111,6 +112,7 @@ class Application:
         pygame.display.set_caption("Done!")
         time_end = pygame.time.get_ticks() / 1000
         print(time_end - time_start)
+
 
     def update(self):
         pos_x, pos_y = pygame.mouse.get_pos()

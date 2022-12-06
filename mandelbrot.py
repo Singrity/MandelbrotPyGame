@@ -1,16 +1,25 @@
 from dataclasses import dataclass
 from math import log
 import numpy as np
+from numba import jit, cuda, int32, float32, float64, complex64, complex128
+from numba.experimental import jitclass
 
-@dataclass
+spec = [
+    ('max_iterations', int32),
+    ('escape_radius', float32),
+]
+#@dataclass
+@jitclass(spec)
 class MandelbrotSet:
-    max_iterations: int
-    escape_radius: float = 2.0
+    def __init__(self, max_iterations, escape_radius):
+        self.max_iterations = max_iterations
+        self.escape_radius = escape_radius
 
     def stability(self, c: complex, smooth=False, clamp=True) -> float:
         value = self.escape_count(c, smooth) / self.max_iterations
         return max(0.0, min(value, 1.0)) if clamp else value
 
+    #@jit(target_backend=cuda)
     def escape_count(self, c: complex, smooth=False) -> float or int:
         #
         z = 0
