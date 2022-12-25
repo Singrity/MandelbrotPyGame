@@ -21,8 +21,11 @@ class MandelbrotSet:
 
     #@jit(target_backend=cuda)
     def escape_count(self, c: complex, smooth=False) -> float or int:
+        #
         z = 0
         for iteration in range(self.max_iterations):
+            #
+        #
             z = z ** 2 + c
             if abs(z) > self.escape_radius:
                 if smooth:
@@ -41,6 +44,7 @@ class MandelbrotSet:
             else:
                 return np.argwhere(abs(z) > self.escape_radius) - 1
         return self.max_iterations
+        #print(z)
 
     def stability_optimized(self, c: complex, smooth=False, clamp=True):
         value = self.escape_count(c, smooth) / self.max_iterations
